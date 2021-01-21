@@ -1,1 +1,1 @@
-# OTUS-SoftwareArchitect2020
+# Homework project for the course OTUS: [Software Architect](https://otus.ru/lessons/arhitektor-po/) 2020
