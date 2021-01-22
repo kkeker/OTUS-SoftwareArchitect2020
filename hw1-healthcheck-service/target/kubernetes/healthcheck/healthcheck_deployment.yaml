@@ -1,0 +1,42 @@
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  annotations: {}
+  labels:
+    app: "healthcheck"
+  name: "hw1-halthcheck-deployment"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: "healthcheck"
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: "RollingUpdate"
+  template:
+    metadata:
+      annotations: {}
+      labels:
+        app: "healthcheck"
+    spec:
+      containers:
+      - image: "kkeker/hw1-halthcheck:v2.1-x86_64"
+        imagePullPolicy: "IfNotPresent"
+        livenessProbe:
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          tcpSocket:
+            port: 8000
+        name: "hw1-halthcheck-deployment"
+        ports:
+        - containerPort: 8000
+          protocol: "TCP"
+        readinessProbe:
+          initialDelaySeconds: 3
+          periodSeconds: 1
+          tcpSocket:
+            port: 8000
+      nodeSelector: {}

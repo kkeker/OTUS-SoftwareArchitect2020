@@ -1,1 +1,7 @@
 /.idea/
+/hw1-healthcheck-service/target/balo
+/hw1-healthcheck-service/target/bin
+/hw1-healthcheck-service/target/caches
+/hw1-healthcheck-service/Ballerina.lock
+/hw1-healthcheck-service/.gitignore
+/hw1-healthcheck-service/ballerina.conf

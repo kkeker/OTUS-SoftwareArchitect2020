@@ -1,0 +1,20 @@
+---
+apiVersion: "extensions/v1beta1"
+kind: "Ingress"
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-passthrough: "false"
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: "/health"
+  labels:
+    app: "healthcheck"
+  name: "hw1-halthcheck-ingress"
+spec:
+  rules:
+  - host: "arch.homework"
+    http:
+      paths:
+      - backend:
+          serviceName: "hw1-halthcheck-service"
+          servicePort: 8000
+        path: "/otusapp/kkeker/health"
