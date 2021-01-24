@@ -5,7 +5,7 @@ import ballerina/kubernetes;
     hostname: "arch.homework",
     name: "hw1-halthcheck-ingress",
     enableTLS: false,
-    path: "/otusapp/kkeker/health",
+    path: "/otusapp/(.*)/health",
     targetPath: "/health"
 }
 @kubernetes:Service {

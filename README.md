@@ -59,7 +59,7 @@ spec:
         - host: arch.homework
           http:
             paths:
-                - path: /otusapp/kkeker/health
+                - path: /otusapp/(.*)/health
                   pathType: Prefix
                   backend:
                     service:
