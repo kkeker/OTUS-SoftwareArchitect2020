@@ -1,0 +1,16 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: '{{.Values.general.name}}-job'
+spec:
+  template:
+    spec:
+      containers:
+        - name: '{{.Values.general.name}}-job'
+          image: curlimages/curl
+          command: ["curl", "--user", '{{.Values.couchdb.adminUsername}}:{{.Values.couchdb.adminPassword}}', "--request", "PUT", "--url", '{{.Values.secret.couchDb.url}}/{{.Values.secret.couchDb.base}}']
+      restartPolicy: OnFailure
+  backoffLimit: 10
+
+

@@ -1,0 +1,17 @@
+---
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  annotations: {}
+  labels:
+    app: {{.Values.general.lable}}
+  name: '{{.Values.general.name}}-service'
+spec:
+  ports:
+    - name: 'http-{{.Values.general.name}}-service'
+      port: {{.Values.deployment.port}}
+      protocol: {{.Values.deployment.protocol}}
+      targetPort: {{.Values.deployment.port}}
+  selector:
+    app: {{.Values.general.lable}}
+  type: {{.Values.service.type}}

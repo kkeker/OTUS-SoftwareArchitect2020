@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{.Values.deployment.ballerinaConfigFile}}
+data:
+  ballerina.conf: |
+    [db]
+    dbUser = "couchuser"
+    dbPass = "EA24UxWYrxfBhoxnuuQv"
+    dbHost = "http://hw2-svc-couchdb:5984"
+    dbName = "hw2-simplerest"

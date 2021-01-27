@@ -1,0 +1,10 @@
+/.idea/
+/hw2-simplerest-service/.gitignore
+/hw2-simplerest-service/src/simplerest/Module.md
+/hw2-simplerest-service/ballerina-internal.log.lck
+/hw2-simplerest-service/ballerina-internal.log
+/hw2-simplerest-service/Ballerina.lock
+/hw2-simplerest-service/target/balo/
+/hw2-simplerest-service/target/bin/
+/hw2-simplerest-service/target/caches/
+

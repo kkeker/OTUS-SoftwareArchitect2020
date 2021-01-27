@@ -1,0 +1,13 @@
+---
+# Source: simplerest/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hw2-simplerest-config
+data:
+  ballerina.conf: |
+    [db]
+    dbUser = "couchuser"
+    dbPass = "EA24UxWYrxfBhoxnuuQv"
+    dbHost = "http://hw2-svc-couchdb:5984"
+    dbName = "hw2-simplerest"

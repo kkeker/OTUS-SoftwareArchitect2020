@@ -1,0 +1,25 @@
+---
+# Source: simplerest/charts/couchdb/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hw2-couchdb
+  labels:
+    app: couchdb
+    chart: "couchdb-3.3.4"
+    heritage: "Helm"
+    release: "hw2"
+data:
+  inifile: |
+    [chttpd]
+    bind_address = any
+    require_valid_user = false
+    
+    [couchdb]
+    uuid = 2666d172b5884904b843b0016756090d
+    
+    
+
+  seedlistinifile: |
+    [cluster]
+    seedlist = couchdb@hw2-couchdb-0.hw2-couchdb.default.svc.cluster.local

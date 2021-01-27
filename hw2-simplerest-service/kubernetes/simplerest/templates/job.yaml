@@ -1,0 +1,15 @@
+---
+# Source: simplerest/templates/job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: 'hw2-simplerest-job'
+spec:
+  template:
+    spec:
+      containers:
+        - name: 'hw2-simplerest-job'
+          image: curlimages/curl
+          command: ["curl", "--user", 'couchuser:EA24UxWYrxfBhoxnuuQv', "--request", "PUT", "--url", 'http://hw2-svc-couchdb:5984/hw2-simplerest']
+      restartPolicy: OnFailure
+  backoffLimit: 10

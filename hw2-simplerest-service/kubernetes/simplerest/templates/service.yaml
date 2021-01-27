@@ -1,0 +1,18 @@
+---
+# Source: simplerest/templates/service.yaml
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  annotations: {}
+  labels:
+    app: simplerest
+  name: 'hw2-simplerest-service'
+spec:
+  ports:
+    - name: 'http-hw2-simplerest-service'
+      port: 8000
+      protocol: TCP
+      targetPort: 8000
+  selector:
+    app: simplerest
+  type: ClusterIP

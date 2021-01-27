@@ -1,0 +1,102 @@
+---
+# Source: simplerest/charts/couchdb/templates/statefulset.yaml
+apiVersion:  apps/v1
+kind: StatefulSet
+metadata:
+  name: hw2-couchdb
+  labels:
+    app: couchdb
+    chart: couchdb-3.3.4
+    release: hw2
+    heritage: Helm
+spec:
+  replicas: 1
+  serviceName: hw2-couchdb
+  podManagementPolicy: Parallel
+  selector:
+    matchLabels:
+      app: couchdb
+      release: hw2
+  template:
+    metadata:
+      labels:
+        app: couchdb
+        release: hw2
+    spec:
+      serviceAccountName: hw2-couchdb
+      initContainers:
+        - name: init-copy
+          image: "busybox:latest"
+          imagePullPolicy: Always
+          command: ['sh','-c','cp /tmp/chart.ini /default.d; cp /tmp/seedlist.ini /default.d; ls -lrt /default.d;']
+          volumeMounts:
+          - name: config
+            mountPath: /tmp/
+          - name: config-storage
+            mountPath: /default.d
+      containers:
+        - name: couchdb
+          image: "couchdb:3.1.0"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: couchdb
+              containerPort: 5984
+            - name: epmd
+              containerPort: 4369
+            - containerPort: 9100
+          env:
+            - name: COUCHDB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: hw2-couchdb
+                  key: adminUsername
+            - name: COUCHDB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: hw2-couchdb
+                  key: adminPassword
+            - name: COUCHDB_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: hw2-couchdb
+                  key: cookieAuthSecret
+            - name: ERL_FLAGS
+              value: " -name couchdb  -setcookie monster "
+          livenessProbe:
+            httpGet:
+              path: /_up
+              port: 5984
+            failureThreshold: 3
+            initialDelaySeconds: 0
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          readinessProbe:
+            httpGet:
+              path: /_up
+              port: 5984
+            failureThreshold: 3
+            initialDelaySeconds: 0
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            {}
+          volumeMounts:
+          - name: config-storage
+            mountPath: /opt/couchdb/etc/default.d
+          - name: database-storage
+            mountPath: /opt/couchdb/data
+      volumes:
+        - name: config-storage
+          emptyDir: {}
+        - name: config
+          configMap:
+            name: hw2-couchdb
+            items:
+              - key: inifile
+                path: chart.ini
+              - key: seedlistinifile
+                path: seedlist.ini
+        - name: database-storage
+          emptyDir: {}

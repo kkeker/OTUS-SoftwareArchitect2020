@@ -1,0 +1,32 @@
+---
+# Source: simplerest/charts/couchdb/templates/networkpolicy.yaml
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: hw2-couchdb
+  labels:
+    app: couchdb
+    chart: couchdb-3.3.4
+    release: hw2
+    heritage: Helm
+spec:
+  podSelector:
+    matchLabels:
+      app: couchdb
+      release: hw2
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 5984
+    - ports:
+        - protocol: TCP
+          port: 9100
+        - protocol: TCP
+          port: 4369
+      from:
+        - podSelector:
+            matchLabels:
+              app: couchdb
+              release: hw2
+  policyTypes:
+    - Ingress

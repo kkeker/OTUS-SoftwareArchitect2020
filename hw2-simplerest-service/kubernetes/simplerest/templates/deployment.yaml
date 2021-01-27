@@ -1,0 +1,72 @@
+---
+# Source: simplerest/templates/deployment.yaml
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  annotations: { }
+  labels:
+    app: simplerest
+  name: 'hw2-simplerest-deployment'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: simplerest
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: "RollingUpdate"
+  template:
+    metadata:
+      annotations: { }
+      labels:
+        app: simplerest
+    spec:
+      containers:
+        - image: 'kkeker/hw2-simplerest:v2.0-x86_64'
+          imagePullPolicy: "IfNotPresent"
+          livenessProbe:
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            tcpSocket:
+              port: 8000
+          name: 'hw2-simplerest-deployment'
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+          readinessProbe:
+            initialDelaySeconds: 3
+            periodSeconds: 1
+            tcpSocket:
+              port: 8000
+          env:
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: 'hw2-simplerest-secret'
+                  key: couchDbUsername
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: 'hw2-simplerest-secret'
+                  key: couchDbPassword
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: 'hw2-simplerest-secret'
+                  key: couchDbUrl
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: 'hw2-simplerest-secret'
+                  key: couchDbBaseName
+          volumeMounts:
+            - name: config
+              mountPath: /home/ballerina/ballerina.conf
+              subPath: ballerina.conf
+      volumes:
+        - name: config
+          configMap:
+            name: hw2-simplerest-config
+      nodeSelector: { }

@@ -1,0 +1,44 @@
+general:
+  name: hw2-simplerest
+  lable: simplerest
+deployment:
+  ballerinaConfigFile: hw2-simplerest-config
+  replicaCount: 1
+  docker:
+    image: kkeker/hw2-simplerest
+    tag: v2.0-x86_64
+  rollingSettings:
+    maxSurge: 1
+    maxUnavailable: 1
+  port: 8000
+  protocol: TCP
+healthcheck:
+  liveness:
+    initialDelaySeconds: 10
+    periodSeconds: 5
+  readiness:
+    initialDelaySeconds: 3
+    periodSeconds: 1
+service:
+  type: ClusterIP
+ingress:
+  class: nginx
+  nginxEnableSsl: false
+  nginxRewriteTarget: /api/v1/$2
+  host: arch.homework
+  path: /otusapp/.*/api/v1(/|$)(.*)
+  pathType: Prefix
+secret:
+  couchDb:
+    url: http://hw2-svc-couchdb:5984
+    base: hw2-simplerest
+
+couchdb:
+  allowAdminParty: false
+  couchdbConfig:
+    couchdb:
+      uuid: 2666d172b5884904b843b0016756090d
+  adminUsername: couchuser
+  adminPassword: EA24UxWYrxfBhoxnuuQv
+  clusterSize: 1
+
