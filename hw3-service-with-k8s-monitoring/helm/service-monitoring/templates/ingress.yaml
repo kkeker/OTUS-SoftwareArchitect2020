@@ -1,0 +1,21 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: '{{.Release.Name}}-ingress'
+  annotations:
+    kubernetes.io/ingress.class: '{{.Values.ingress.class}}'
+    nginx.ingress.kubernetes.io/rewrite-target: '{{.Values.ingress.nginxRewriteTarget}}'
+    nginx.ingress.kubernetes.io/ssl-passthrough: '{{.Values.ingress.nginxEnableSsl}}'
+spec:
+  rules:
+    - host: {{.Values.ingress.host}}
+      http:
+        paths:
+          - path: {{.Values.ingress.path}}
+            pathType: {{.Values.ingress.pathType}}
+            backend:
+              service:
+                name: '{{.Release.Name}}-service'
+                port:
+                  number: {{.Values.deployment.port}}

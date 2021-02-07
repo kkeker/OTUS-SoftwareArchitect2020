@@ -1,0 +1,20 @@
+apiVersion: v2
+name: service-monitoring
+description: OTUS SA-2020 HW3
+type: application
+version: 0.2.1
+appVersion: "1.16.0"
+
+dependencies:
+  - name: couchdb
+    version: 3.3.4
+    repository: https://apache.github.io/couchdb-helm
+    condition: couchdb.enabled
+    tags:
+      - couchdb-server
+  - name: prometheus-couchdb-exporter
+    version: 0.2.0
+    repository: https://prometheus-community.github.io/helm-charts
+    condition: couchdb-exporter.enabled
+    tags:
+      - couchdb-monitoring

@@ -1,0 +1,68 @@
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  annotations: { }
+  labels:
+    app: {{.Values.general.lable}}
+  name: '{{.Release.Name}}-deployment'
+spec:
+  replicas: {{.Values.deployment.replicaCount}}
+  selector:
+    matchLabels:
+      app: {{.Values.general.lable}}
+  strategy:
+    rollingUpdate:
+      maxSurge: {{.Values.deployment.rollingSettings.maxSurge}}
+      maxUnavailable: {{.Values.deployment.rollingSettings.maxUnavailable}}
+    type: "RollingUpdate"
+  template:
+    metadata:
+      annotations: { }
+      labels:
+        app: {{.Values.general.lable}}
+    spec:
+      containers:
+        - image: '{{.Values.deployment.docker.image}}:{{.Values.deployment.docker.tag}}'
+          imagePullPolicy: "IfNotPresent"
+          livenessProbe:
+            initialDelaySeconds: {{.Values.healthcheck.liveness.initialDelaySeconds}}
+            periodSeconds: {{.Values.healthcheck.liveness.periodSeconds}}
+            tcpSocket:
+              port: {{.Values.deployment.port}}
+          name: '{{.Release.Name}}-deployment'
+          ports:
+            - containerPort: {{.Values.deployment.port}}
+              protocol: {{.Values.deployment.protocol}}
+            - containerPort: 9797
+              protocol: TCP
+              name: bal-mon
+          readinessProbe:
+            initialDelaySeconds: {{.Values.healthcheck.readiness.initialDelaySeconds}}
+            periodSeconds: {{.Values.healthcheck.readiness.periodSeconds}}
+            tcpSocket:
+              port: {{.Values.deployment.port}}
+          env:
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: '{{.Release.Name}}-couchdb'
+                  key: adminUsername
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: '{{.Release.Name}}-couchdb'
+                  key: adminPassword
+            - name: DB_HOST
+              value: {{template "couchdb.myuri" .}}
+            - name: DB_NAME
+              value: {{.Values.dbconnect.dbname}}
+          volumeMounts:
+            - name: config
+              mountPath: /home/ballerina/ballerina.conf
+              subPath: ballerina.conf
+      volumes:
+        - name: config
+          configMap:
+            name: '{{.Release.Name}}-config'
+      nodeSelector: { }

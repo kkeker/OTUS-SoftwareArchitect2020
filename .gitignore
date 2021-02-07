@@ -1,0 +1,12 @@
+/.idea/
+/hw3-service-with-k8s-monitoring/.gitignore
+/hw3-service-with-k8s-monitoring/src/simplerest/Module.md
+/hw3-service-with-k8s-monitoring/ballerina-internal.log.lck
+/hw3-service-with-k8s-monitoring/ballerina-internal.log
+/hw3-service-with-k8s-monitoring/Ballerina.lock
+/hw3-service-with-k8s-monitoring/target/balo/
+/hw3-service-with-k8s-monitoring/target/bin/
+/hw3-service-with-k8s-monitoring/target/caches/
+**/Chart.lock
+**/.DS_Store
+**/Ballerina.lock

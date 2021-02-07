@@ -1,0 +1,21 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: '{{.Release.Name}}-config'
+data:
+  ballerina.conf: |
+    [b7a.observability.metrics]
+    # Flag to enable Metrics https://ballerina.io/learn/observing-ballerina-code/
+    enabled=true
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: '{{.Release.Name}}-job-config'
+data:
+  job-script.sh: |
+    #!/bin/sh
+    curl -v -u $DB_USER:$DB_PASS -X PUT {{template "couchdb.myuri" .}}/{{.Values.dbconnect.dbname}}
+    curl -v -u $DB_USER:$DB_PASS -X PUT {{template "couchdb.myuri" .}}/_users
+    curl -v -u $DB_USER:$DB_PASS -X PUT -H "Accept: application/json" -H "Content-Type: application/json" {{template "couchdb.myuri" .}}/_users/org.couchdb.user:monitoring -d '{"name": "monitoring", "password": "{{template "couchdb.monpass" .}}", "roles": ["_reader"], "type": "user"}'

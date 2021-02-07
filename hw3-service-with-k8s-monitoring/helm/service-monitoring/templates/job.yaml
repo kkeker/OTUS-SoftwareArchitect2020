@@ -1,0 +1,33 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: '{{.Release.Name}}-db-job'
+spec:
+  template:
+    spec:
+      containers:
+        - name: '{{.Release.Name}}-db-job'
+          image: curlimages/curl
+          command: ["/bin/sh", "/data/job-script.sh"]
+          env:
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: '{{.Release.Name}}-couchdb'
+                  key: adminUsername
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: '{{.Release.Name}}-couchdb'
+                  key: adminPassword
+          volumeMounts:
+            - name: job-config
+              mountPath: /data/job-script.sh
+              subPath: job-script.sh
+      volumes:
+        - name: job-config
+          configMap:
+            name: '{{.Release.Name}}-job-config'
+      restartPolicy: OnFailure
+  backoffLimit: 10
