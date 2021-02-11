@@ -1,0 +1,35 @@
+---
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: '{{.Release.Name}}-service'
+  annotations: {}
+  labels:
+    app: {{.Values.general.lable}}
+spec:
+  ports:
+    - name: 'http-{{.Release.Name}}-service'
+      port: {{.Values.deployment.port}}
+      protocol: {{.Values.deployment.protocol}}
+      targetPort: {{.Values.deployment.port}}
+  selector:
+    app: {{.Values.general.lable}}
+  type: {{.Values.service.type}}
+---
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: '{{.Release.Name}}-service-prometheus'
+  annotations: {}
+  labels:
+    app: {{.Values.general.lable}}
+spec:
+  ports:
+    - name: 'tcp-{{.Release.Name}}-prometheus'
+      port: 9797
+      protocol: TCP
+      targetPort: 9797
+  selector:
+    app: {{.Values.general.lable}}
+  type: {{.Values.service.type}}  
+

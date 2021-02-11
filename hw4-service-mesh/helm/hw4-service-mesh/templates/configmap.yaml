@@ -1,0 +1,28 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: '{{.Release.Name}}-config-v1'
+  labels:
+    version: v1
+data:
+  Config.toml: |
+    [hw4_service_mesh]
+    ver = "v1"
+    [ballerina.observe]
+    metricsEnabled = true
+    tracingEnabled = true
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: '{{.Release.Name}}-config-v2'
+  labels:
+    version: v2
+data:
+  Config.toml: |
+    [hw4_service_mesh]
+    ver = "v2"
+    [ballerina.observe]
+    metricsEnabled = true
+    tracingEnabled = true

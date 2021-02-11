@@ -1,0 +1,7 @@
+[package]
+org = "kkeker"
+name = "hw4_service_mesh"
+version = "0.1.0"
+
+[build-options]
+observabilityIncluded = true

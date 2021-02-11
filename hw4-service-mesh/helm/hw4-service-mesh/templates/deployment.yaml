@@ -1,0 +1,140 @@
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: '{{.Release.Name}}-deployment-v1'
+  annotations: { }
+  labels:
+    app: {{.Values.general.lable}}
+spec:
+  replicas: {{.Values.deployment.replicaCount}}
+  selector:
+    matchLabels:
+      app: {{.Values.general.lable}}
+  strategy:
+    rollingUpdate:
+      maxSurge: {{.Values.deployment.rollingSettings.maxSurge}}
+      maxUnavailable: {{.Values.deployment.rollingSettings.maxUnavailable}}
+    type: "RollingUpdate"
+  template:
+    metadata:
+      annotations: { }
+      labels:
+        app: {{.Values.general.lable}}
+        version: v1
+    spec:
+      containers:
+        - image: '{{.Values.deployment.docker.image}}:{{.Values.deployment.docker.tag}}'
+          imagePullPolicy: "IfNotPresent"
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - "sleep"
+                  - "15"
+          livenessProbe:
+            initialDelaySeconds: {{.Values.healthcheck.liveness.initialDelaySeconds}}
+            periodSeconds: {{.Values.healthcheck.liveness.periodSeconds}}
+            tcpSocket:
+              port: {{.Values.deployment.port}}
+          name: '{{.Release.Name}}-deployment'
+          ports:
+            - containerPort: {{.Values.deployment.port}}
+              protocol: {{.Values.deployment.protocol}}
+            - containerPort: 9797
+              protocol: TCP
+              name: prometheus  
+          readinessProbe:
+            initialDelaySeconds: {{.Values.healthcheck.readiness.initialDelaySeconds}}
+            periodSeconds: {{.Values.healthcheck.readiness.periodSeconds}}
+            tcpSocket:
+              port: {{.Values.deployment.port}}
+          env:
+            - name: "BALCONFIGFILE"
+              value: "/home/ballerina/conf/Config.toml"
+          # resources:
+          #   limits:
+          #     memory: {{.Values.deployment.resources.max.ram}}
+          #     cpu: {{.Values.deployment.resources.max.cpu}}
+          #   requests:
+          #     memory: {{.Values.deployment.resources.min.ram}}
+          #     cpu: {{.Values.deployment.resources.min.cpu}}
+          volumeMounts:
+            - name: config-v1
+              mountPath: /home/ballerina/conf/Config.toml
+              subPath: Config.toml
+      volumes:
+        - name: config-v1
+          configMap:
+            name: '{{.Release.Name}}-config-v1'
+      nodeSelector: { }
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: '{{.Release.Name}}-deployment-v2'
+  annotations: { }
+  labels:
+    app: {{.Values.general.lable}}
+spec:
+  replicas: {{.Values.deployment.replicaCount}}
+  selector:
+    matchLabels:
+      app: {{.Values.general.lable}}
+  strategy:
+    rollingUpdate:
+      maxSurge: {{.Values.deployment.rollingSettings.maxSurge}}
+      maxUnavailable: {{.Values.deployment.rollingSettings.maxUnavailable}}
+    type: "RollingUpdate"
+  template:
+    metadata:
+      annotations: { }
+      labels:
+        app: {{.Values.general.lable}}
+        version: v2
+    spec:
+      containers:
+        - image: '{{.Values.deployment.docker.image}}:{{.Values.deployment.docker.tag}}'
+          imagePullPolicy: "IfNotPresent"
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - "sleep"
+                  - "15"
+          livenessProbe:
+            initialDelaySeconds: {{.Values.healthcheck.liveness.initialDelaySeconds}}
+            periodSeconds: {{.Values.healthcheck.liveness.periodSeconds}}
+            tcpSocket:
+              port: {{.Values.deployment.port}}
+          name: '{{.Release.Name}}-deployment'
+          ports:
+            - containerPort: {{.Values.deployment.port}}
+              protocol: {{.Values.deployment.protocol}}
+            - containerPort: 9797
+              protocol: TCP
+              name: prometheus
+          readinessProbe:
+            initialDelaySeconds: {{.Values.healthcheck.readiness.initialDelaySeconds}}
+            periodSeconds: {{.Values.healthcheck.readiness.periodSeconds}}
+            tcpSocket:
+              port: {{.Values.deployment.port}}
+          env:
+            - name: "BALCONFIGFILE"
+              value: "/home/ballerina/conf/Config.toml"
+          # resources:
+          #   limits:
+          #     memory: {{.Values.deployment.resources.max.ram}}
+          #     cpu: {{.Values.deployment.resources.max.cpu}}
+          #   requests:
+          #     memory: {{.Values.deployment.resources.min.ram}}
+          #     cpu: {{.Values.deployment.resources.min.cpu}}
+          volumeMounts:
+            - name: config-v2
+              mountPath: /home/ballerina/conf/Config.toml
+              subPath: Config.toml
+      volumes:
+        - name: config-v2
+          configMap:
+            name: '{{.Release.Name}}-config-v2'
+      nodeSelector: { }      

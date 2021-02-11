@@ -1,0 +1,35 @@
+general:
+  lable: service-mesh
+deployment:
+  replicaCount: 1
+  docker:
+    image: kkeker/hw4-whoiam
+    tag: v1.2-x86_64
+  rollingSettings:
+    maxSurge: 1
+    maxUnavailable: 1
+  port: 8000
+  protocol: TCP
+  resources:
+    min:
+      cpu: "100Mi"
+      ram: "200m"
+    max:
+      cpu: "256Mi"
+      ram: "500m"
+healthcheck:
+  liveness:
+    initialDelaySeconds: 10
+    periodSeconds: 5
+  readiness:
+    initialDelaySeconds: 3
+    periodSeconds: 1
+service:
+  type: ClusterIP
+ingress:
+  host: arch.homework
+  inputPath: /otusapp/.*/whoiam
+  outputPath: /whoiam
+  trafficWeight:
+    v1: 50
+    v2: 50

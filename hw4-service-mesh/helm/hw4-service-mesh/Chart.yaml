@@ -1,0 +1,6 @@
+apiVersion: v2
+name: service-mesh
+description: OTUS SA-2020 HW4
+type: application
+version: 0.1.1
+appVersion: "1.16.0"

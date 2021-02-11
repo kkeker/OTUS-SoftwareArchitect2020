@@ -1,0 +1,16 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: '{{.Release.Name}}-service-monitor'
+  labels:
+    release: prometheus-stack
+spec:
+  selector:
+    matchLabels:
+      app: {{.Values.general.lable}}
+  namespaceSelector:
+    matchNames:
+      - default
+  endpoints:
+    - port: prometheus
