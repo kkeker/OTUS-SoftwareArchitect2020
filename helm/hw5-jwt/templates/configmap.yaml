@@ -1,0 +1,55 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: '{{.Release.Name}}-{{.Values.deployment.bff.lable}}-config'
+data:
+  Config.toml: |
+    [micro_bff]
+    jwtAudience = "vEwzbcasJVQm1jVYHUHCjhxZ4tYa"
+    jwtP12Path = "/home/ballerina/resources/jwt.p12"
+    jwtP12Password = "ICEGSckINg0jT949x7LG"
+    jwtKeyAlias = "jwt_store"
+    httpsP12Path = "/home/ballerina/resources/https.p12"
+    httpsP12Password = "UBMkNk3Smveseer3mVdi"
+    profileBackendUrl = "https://{{.Release.Name}}-{{.Values.deployment.profile.lable}}-service:{{.Values.deployment.profile.port}}"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: '{{.Release.Name}}-{{.Values.deployment.iam.lable}}-config'
+data:
+  Config.toml: |
+    [micro_iam]
+    jwtAudience = "vEwzbcasJVQm1jVYHUHCjhxZ4tYa"
+    jwtExpTimeInSeconds = 3600
+    jwtP12Path = "/home/ballerina/resources/jwt.p12"
+    jwtP12Password = "ICEGSckINg0jT949x7LG"
+    jwtKeyAlias = "jwt_store"
+    jwtKeyPassword = "ICEGSckINg0jT949x7LG"
+    httpsP12Path = "/home/ballerina/resources/https.p12"
+    httpsP12Password = "UBMkNk3Smveseer3mVdi"
+    redisUri = "{{.Release.Name}}-redis-master:6379"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: '{{.Release.Name}}-{{.Values.deployment.reg.lable}}-config'
+data:
+  Config.toml: |
+    [reg_service]
+    redisUri = "{{.Release.Name}}-redis-master:6379"
+    httpsP12Path = "/home/ballerina/resources/https.p12"
+    httpsP12Password = "UBMkNk3Smveseer3mVdi"
+    passKey = "ZY8vxSfMoB8iJ3i"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: '{{.Release.Name}}-{{.Values.deployment.profile.lable}}-config'
+data:
+  Config.toml: |
+    [profile_service]
+    redisUri = "{{.Release.Name}}-redis-master:6379"
+    httpsP12Path = "/home/ballerina/resources/https.p12"
+    httpsP12Password = "UBMkNk3Smveseer3mVdi"       

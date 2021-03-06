@@ -1,0 +1,270 @@
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: '{{.Release.Name}}-{{.Values.deployment.bff.lable}}-deployment'
+  labels:
+    app: {{.Values.deployment.bff.lable}}
+spec:
+  replicas: {{.Values.deployment.bff.replicaCount}}
+  selector:
+    matchLabels:
+      app: {{.Values.deployment.bff.lable}}
+  strategy:
+    rollingUpdate:
+      maxSurge: {{.Values.deployment.global.rollingSettings.maxSurge}}
+      maxUnavailable: {{.Values.deployment.global.rollingSettings.maxUnavailable}}
+    type: "RollingUpdate"
+  template:
+    metadata:
+      labels:
+        app: {{.Values.deployment.bff.lable}}
+    spec:
+      containers:
+        - image: '{{.Values.deployment.bff.image}}:{{.Values.deployment.bff.tag}}'
+          imagePullPolicy: "IfNotPresent"
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - "sleep"
+                  - "15"
+          livenessProbe:
+            initialDelaySeconds: {{.Values.deployment.global.healthcheck.liveness.initialDelaySeconds}}
+            periodSeconds: {{.Values.deployment.global.healthcheck.liveness.periodSeconds}}
+            tcpSocket:
+              port: {{.Values.deployment.bff.port}}
+          name: '{{.Release.Name}}-{{.Values.deployment.bff.lable}}-deployment'
+          ports:
+            - containerPort: {{.Values.deployment.bff.port}}
+              protocol: {{.Values.deployment.bff.protocol}}
+          readinessProbe:
+            initialDelaySeconds: {{.Values.deployment.global.healthcheck.readiness.initialDelaySeconds}}
+            periodSeconds: {{.Values.deployment.global.healthcheck.readiness.periodSeconds}}
+            tcpSocket:
+              port: {{.Values.deployment.bff.port}}
+          env:
+            - name: "BALCONFIGFILE"
+              value: "/home/ballerina/conf/Config.toml"
+          volumeMounts:
+            - name: config
+              mountPath: /home/ballerina/conf/Config.toml
+              subPath: Config.toml
+              readOnly: true
+            - name: https-p12
+              mountPath: /home/ballerina/resources/https.p12
+              subPath: https.p12
+              readOnly: true
+            - name: jwt-p12
+              mountPath: /home/ballerina/resources/jwt.p12
+              subPath: jwt.p12
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: '{{.Release.Name}}-{{.Values.deployment.bff.lable}}-config'
+        - name: https-p12
+          secret:
+            secretName: '{{.Release.Name}}-https-p12'
+        - name: jwt-p12
+          secret:
+            secretName: '{{.Release.Name}}-jwt-p12'   
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: '{{.Release.Name}}-{{.Values.deployment.iam.lable}}-deployment'
+  labels:
+    app: {{.Values.deployment.iam.lable}}
+spec:
+  replicas: {{.Values.deployment.iam.replicaCount}}
+  selector:
+    matchLabels:
+      app: {{.Values.deployment.iam.lable}}
+  strategy:
+    rollingUpdate:
+      maxSurge: {{.Values.deployment.global.rollingSettings.maxSurge}}
+      maxUnavailable: {{.Values.deployment.global.rollingSettings.maxUnavailable}}
+    type: "RollingUpdate"
+  template:
+    metadata:
+      labels:
+        app: {{.Values.deployment.iam.lable}}
+    spec:
+      containers:
+        - image: '{{.Values.deployment.iam.image}}:{{.Values.deployment.iam.tag}}'
+          imagePullPolicy: "IfNotPresent"
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - "sleep"
+                  - "15"
+          livenessProbe:
+            initialDelaySeconds: {{.Values.deployment.global.healthcheck.liveness.initialDelaySeconds}}
+            periodSeconds: {{.Values.deployment.global.healthcheck.liveness.periodSeconds}}
+            tcpSocket:
+              port: {{.Values.deployment.iam.port}}
+          name: '{{.Release.Name}}-{{.Values.deployment.iam.lable}}-deployment'
+          ports:
+            - containerPort: {{.Values.deployment.iam.port}}
+              protocol: {{.Values.deployment.iam.protocol}}
+          readinessProbe:
+            initialDelaySeconds: {{.Values.deployment.global.healthcheck.readiness.initialDelaySeconds}}
+            periodSeconds: {{.Values.deployment.global.healthcheck.readiness.periodSeconds}}
+            tcpSocket:
+              port: {{.Values.deployment.iam.port}}
+          env:
+            - name: "BALCONFIGFILE"
+              value: "/home/ballerina/conf/Config.toml"
+          volumeMounts:
+            - name: config
+              mountPath: /home/ballerina/conf/Config.toml
+              subPath: Config.toml
+              readOnly: true
+            - name: https-p12
+              mountPath: /home/ballerina/resources/https.p12
+              subPath: https.p12
+              readOnly: true
+            - name: jwt-p12
+              mountPath: /home/ballerina/resources/jwt.p12
+              subPath: jwt.p12
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: '{{.Release.Name}}-{{.Values.deployment.iam.lable}}-config'
+        - name: https-p12
+          secret:
+            secretName: '{{.Release.Name}}-https-p12'
+        - name: jwt-p12
+          secret:
+            secretName: '{{.Release.Name}}-jwt-p12'   
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: '{{.Release.Name}}-{{.Values.deployment.reg.lable}}-deployment'
+  labels:
+    app: {{.Values.deployment.reg.lable}}
+spec:
+  replicas: {{.Values.deployment.reg.replicaCount}}
+  selector:
+    matchLabels:
+      app: {{.Values.deployment.reg.lable}}
+  strategy:
+    rollingUpdate:
+      maxSurge: {{.Values.deployment.global.rollingSettings.maxSurge}}
+      maxUnavailable: {{.Values.deployment.global.rollingSettings.maxUnavailable}}
+    type: "RollingUpdate"
+  template:
+    metadata:
+      labels:
+        app: {{.Values.deployment.reg.lable}}
+    spec:
+      containers:
+        - image: '{{.Values.deployment.reg.image}}:{{.Values.deployment.reg.tag}}'
+          imagePullPolicy: "IfNotPresent"
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - "sleep"
+                  - "15"
+          livenessProbe:
+            initialDelaySeconds: {{.Values.deployment.global.healthcheck.liveness.initialDelaySeconds}}
+            periodSeconds: {{.Values.deployment.global.healthcheck.liveness.periodSeconds}}
+            tcpSocket:
+              port: {{.Values.deployment.reg.port}}
+          name: '{{.Release.Name}}-{{.Values.deployment.reg.lable}}-deployment'
+          ports:
+            - containerPort: {{.Values.deployment.reg.port}}
+              protocol: {{.Values.deployment.reg.protocol}}
+          readinessProbe:
+            initialDelaySeconds: {{.Values.deployment.global.healthcheck.readiness.initialDelaySeconds}}
+            periodSeconds: {{.Values.deployment.global.healthcheck.readiness.periodSeconds}}
+            tcpSocket:
+              port: {{.Values.deployment.reg.port}}
+          env:
+            - name: "BALCONFIGFILE"
+              value: "/home/ballerina/conf/Config.toml"
+          volumeMounts:
+            - name: config
+              mountPath: /home/ballerina/conf/Config.toml
+              subPath: Config.toml
+              readOnly: true
+            - name: https-p12
+              mountPath: /home/ballerina/resources/https.p12
+              subPath: https.p12
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: '{{.Release.Name}}-{{.Values.deployment.reg.lable}}-config'
+        - name: https-p12
+          secret:
+            secretName: '{{.Release.Name}}-https-p12'
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: '{{.Release.Name}}-{{.Values.deployment.profile.lable}}-deployment'
+  labels:
+    app: {{.Values.deployment.profile.lable}}
+spec:
+  replicas: {{.Values.deployment.profile.replicaCount}}
+  selector:
+    matchLabels:
+      app: {{.Values.deployment.profile.lable}}
+  strategy:
+    rollingUpdate:
+      maxSurge: {{.Values.deployment.global.rollingSettings.maxSurge}}
+      maxUnavailable: {{.Values.deployment.global.rollingSettings.maxUnavailable}}
+    type: "RollingUpdate"
+  template:
+    metadata:
+      labels:
+        app: {{.Values.deployment.profile.lable}}
+    spec:
+      containers:
+        - image: '{{.Values.deployment.profile.image}}:{{.Values.deployment.profile.tag}}'
+          imagePullPolicy: "IfNotPresent"
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - "sleep"
+                  - "15"
+          livenessProbe:
+            initialDelaySeconds: {{.Values.deployment.global.healthcheck.liveness.initialDelaySeconds}}
+            periodSeconds: {{.Values.deployment.global.healthcheck.liveness.periodSeconds}}
+            tcpSocket:
+              port: {{.Values.deployment.profile.port}}
+          name: '{{.Release.Name}}-{{.Values.deployment.profile.lable}}-deployment'
+          ports:
+            - containerPort: {{.Values.deployment.profile.port}}
+              protocol: {{.Values.deployment.profile.protocol}}
+          readinessProbe:
+            initialDelaySeconds: {{.Values.deployment.global.healthcheck.readiness.initialDelaySeconds}}
+            periodSeconds: {{.Values.deployment.global.healthcheck.readiness.periodSeconds}}
+            tcpSocket:
+              port: {{.Values.deployment.profile.port}}
+          env:
+            - name: "BALCONFIGFILE"
+              value: "/home/ballerina/conf/Config.toml"
+          volumeMounts:
+            - name: config
+              mountPath: /home/ballerina/conf/Config.toml
+              subPath: Config.toml
+              readOnly: true
+            - name: https-p12
+              mountPath: /home/ballerina/resources/https.p12
+              subPath: https.p12
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: '{{.Release.Name}}-{{.Values.deployment.profile.lable}}-config'
+        - name: https-p12
+          secret:
+            secretName: '{{.Release.Name}}-https-p12'

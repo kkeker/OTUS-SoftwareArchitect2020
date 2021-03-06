@@ -1,0 +1,13 @@
+[micro_bff]
+
+### For Testing only!!!
+
+jwtAudience = "vEwzbcasJVQm1jVYHUHCjhxZ4tYa"
+jwtP12Path = "./resources/jwt.p12"
+jwtP12Password = "ICEGSckINg0jT949x7LG"
+jwtKeyAlias = "jwt_store"
+
+httpsP12Path = "./resources/https.p12"
+httpsP12Password = "UBMkNk3Smveseer3mVdi"
+
+profileBackendUrl = "https://localhost:9080"

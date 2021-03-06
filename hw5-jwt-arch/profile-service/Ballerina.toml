@@ -1,0 +1,7 @@
+[package]
+org = "kkeker"
+name = "profile_service"
+version = "0.1.4"
+
+[build-options]
+observabilityIncluded = false

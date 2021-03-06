@@ -1,0 +1,8 @@
+[package]
+org = "kkeker"
+name = "reg_service"
+version = "0.1.0"
+
+[build-options]
+observabilityIncluded = false
+

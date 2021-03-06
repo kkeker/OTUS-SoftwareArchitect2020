@@ -1,0 +1,51 @@
+deployment:
+  bff:
+    lable: micro-bff
+    image: kkeker/hw5-micro-bff
+    tag: v1.1-x86_64
+    replicaCount: 1
+    port: 9090
+    protocol: TCP
+  iam:
+    lable: micro-iam
+    image: kkeker/hw5-micro-iam
+    tag: v1.0-x86_64
+    replicaCount: 1
+    port: 9095
+    protocol: TCP
+  reg:
+    lable: registration
+    image: kkeker/hw5-reg-service
+    tag: v1.0-x86_64
+    replicaCount: 1
+    port: 9085
+    protocol: TCP
+  profile:
+    lable: profile
+    image: kkeker/hw5-profile-service
+    tag: v1.5-x86_64
+    replicaCount: 1
+    port: 9080
+    protocol: TCP
+  global:
+    rollingSettings:
+      maxSurge: 1
+      maxUnavailable: 1
+    healthcheck:
+      liveness:
+        initialDelaySeconds: 10
+        periodSeconds: 5
+      readiness:
+        initialDelaySeconds: 3
+        periodSeconds: 1
+service:
+  type: ClusterIP
+ingress:
+  class: nginx
+  host: arch.homework
+
+redis:
+  cluster:
+    enabled: false
+  usePassword: false  
+

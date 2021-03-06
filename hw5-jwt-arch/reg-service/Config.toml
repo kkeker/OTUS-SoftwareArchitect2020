@@ -1,0 +1,10 @@
+[reg_service]
+
+### For Testing only!!!
+
+redisUri = "localhost:6379"
+
+httpsP12Path = "./resources/https.p12"
+httpsP12Password = "UBMkNk3Smveseer3mVdi"
+
+passKey = "ZY8vxSfMoB8iJ3i"

@@ -1,0 +1,7 @@
+.idea/
+**/ballerina-internal.log
+**/modules/
+**/target
+**/.DS_Store
+helm/hw5-jwt/charts/*.tgz
+helm/hw5-jwt/Chart.lock
