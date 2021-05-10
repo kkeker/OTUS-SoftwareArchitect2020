@@ -1,0 +1,36 @@
+{
+  "mdcf": "1.0.0",
+  "id": "reg-service",
+  "url": "https://github.com/kkeker/OTUS-SoftwareArchitect2020/tree/hw5_BFF_API-Gateway/hw5-jwt-arch/reg-service",
+  "name": "Registration Service",
+  "description": "This service provides API for managing user registration.",
+  "capabilities": [
+    "The user can create an account by passing the account parameters."
+  ],
+  "implementation": {
+    "qualities": [
+      "HTTP REST compatible",
+      "Written in Ballerina.io/JVM 11",
+      "Uses Redis as Storage-backend",
+      "In-Flight encryption of HTTPS data",
+      "Deployment model as a Kubernetes service"
+    ],
+    "logic": ["Processing the request and writing to the storage"],
+    "data": []
+  },
+  "dependencies": {
+    "serviceDependencies": [
+      {
+        "title": "Destination API (any)",
+        "list": ["POST Operation", "HTTP Rest API"]
+      },
+      "Without JWT or Auth Header / Query parameter"
+    ],
+    "eventsSubscriptions": []
+  },
+  "interface": {
+    "queries": [],
+    "commands": [],
+    "eventsPublished": []
+  }
+}

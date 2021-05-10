@@ -1,0 +1,74 @@
+openapi: 3.0.1
+info:
+  title: reg-service
+  description: Registration Service
+  version: 0.0.1
+
+servers:
+  - url: https://reg-service
+    description: Deynamic hostname
+
+paths:
+  /createUser:
+    post:
+      tags:
+        - regEp
+      summary: Creates a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "201":
+          description: User created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: User already exists!
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal error!
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        login:
+          type: string
+          example: testuser
+        password:
+          type: string
+          example: testpassword123
+        body:
+          type: object
+          properties:
+            firstName:
+              type: string
+              example: John
+            lastName:
+              type: string
+              example: Smith
+            age:
+              type: integer
+              example: 23
+            about:
+              type: string
+              example: I'a a Test User
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: User already exists!

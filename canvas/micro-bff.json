@@ -1,0 +1,42 @@
+{
+  "mdcf": "1.0.0",
+  "id": "micro-bff",
+  "url": "https://github.com/kkeker/OTUS-SoftwareArchitect2020/tree/hw5_BFF_API-Gateway/hw5-jwt-arch/micro-bff",
+  "name": "BFF Service",
+  "description": "A service that provides an API implementation for a specific domain. Implements API routing and authorization.",
+  "capabilities": [
+    "The user must contact this service to get to other, protected by authorization services."
+  ],
+  "implementation": {
+    "qualities": [
+      "HTTP REST compatible",
+      "Written in Ballerina.io/JVM 11",
+      "In-Flight encryption of HTTPS data",
+      "Deployment model as a Kubernetes service",
+      "Implements BFF pattern and JWT authorization"
+    ],
+    "logic": [
+      "Checks the validity of the JWT",
+      "Checks the JWT lifetime",
+      "Routing requests",
+      "Backend service error handling",
+      "User authorization"
+    ],
+    "data": []
+  },
+  "dependencies": {
+    "serviceDependencies": [
+      {
+        "title": "Destination API (any)",
+        "list": ["ANY Operations", "HTTP Rest API"]
+      },
+      "With JWT / Query parameter"
+    ],
+    "eventsSubscriptions": []
+  },
+  "interface": {
+    "queries": [],
+    "commands": [],
+    "eventsPublished": []
+  }
+}

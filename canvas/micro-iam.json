@@ -1,0 +1,43 @@
+{
+  "mdcf": "1.0.0",
+  "id": "micro-iam",
+  "url": "https://github.com/kkeker/OTUS-SoftwareArchitect2020/tree/hw5_BFF_API-Gateway/hw5-jwt-arch/micro-iam",
+  "name": "IAM Service",
+  "description": "Service for identifying, authorizing, granting access and issuing and renewing JWTs.",
+  "capabilities": [
+    "The user can log in by providing a username and password, in response he will receive a JWT.",
+    "The user can provide an expiring JWT and receive a new JWT by renewing it."
+  ],
+  "implementation": {
+    "qualities": [
+      "HTTP REST compatible",
+      "Written in Ballerina.io/JVM 11",
+      "Uses Redis as Storage-backend",
+      "In-Flight encryption of HTTPS data",
+      "Deployment model as a Kubernetes service"
+    ],
+    "logic": [
+      "Check if the user is registered in the repository",
+      "Releases JWT for registered user",
+      "Checks the validity of the JWT",
+      "Checks the JWT lifetime",
+      "Releases a new JWT to replace the expired one"
+    ],
+    "data": []
+  },
+  "dependencies": {
+    "serviceDependencies": [
+      {
+        "title": "Destination API (any)",
+        "list": ["POST Operation", "HTTP Rest API"]
+      },
+      "Without JWT or Auth Header / Query parameter"
+    ],
+    "eventsSubscriptions": []
+  },
+  "interface": {
+    "queries": [],
+    "commands": [],
+    "eventsPublished": []
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "mdcf": "1.0.0",
+  "id": "profile-service",
+  "url": "https://github.com/kkeker/OTUS-SoftwareArchitect2020/tree/hw5_BFF_API-Gateway/hw5-jwt-arch/profile-service",
+  "name": "Profile Service",
+  "description": "User profile management service.",
+  "capabilities": [
+    "The user can get their profile for viewing.",
+    "The user can change the parameters of his profile."
+  ],
+  "implementation": {
+    "qualities": [
+      "HTTP REST compatible",
+      "Written in Ballerina.io/JVM 11",
+      "In-Flight encryption of HTTPS data",
+      "Deployment model as a Kubernetes service",
+      "Uses Redis as Storage-backend"
+    ],
+    "logic": [
+      "Check if the user is registered in the repository",
+      "User Authentication",
+      "Displays the user profile, excluding authorization data",
+      "Checking the validity of the passed user profile",
+      "User profile change and save to storage"
+    ],
+    "data": []
+  },
+  "dependencies": {
+    "serviceDependencies": [
+      {
+        "title": "Destination API (any)",
+        "list": ["GET / PUT Operations", "HTTP Rest API"]
+      },
+      "With Auth Header / Query parameter"
+    ],
+    "eventsSubscriptions": []
+  },
+  "interface": {
+    "queries": [],
+    "commands": [],
+    "eventsPublished": []
+  }
+}

@@ -1,0 +1,127 @@
+openapi: 3.0.1
+info:
+  title: profile-service
+  description: Profile Service
+  version: 0.0.1
+
+servers:
+  - url: https://profile-service
+    description: Deynamic hostname
+
+security:
+  - ApiKeyAuth: []
+
+paths:
+  /:
+    get:
+      tags:
+        - profileEp
+      summary: Get user profile
+      responses:
+        "200":
+          description: User profile.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Profile"
+        "404":
+          description: User not found!
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "400":
+          description: Header X-User-Id not provided!
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal error!
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      tags:
+        - profileEp
+      summary: Update user profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Profile"
+      responses:
+        "201":
+          description: Profile updated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  updatedProfile:
+                    type: object
+                    properties:
+                      firstName:
+                        type: string
+                        example: John
+                      lastName:
+                        type: string
+                        example: Smith
+                      age:
+                        type: integer
+                        example: 23
+                      about:
+                        type: string
+                        example: I'a a Test User
+        "404":
+          description: User not found!
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "400":
+          description: Header X-User-Id not provided!
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal error!
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-User-Id
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Header X-User-Id not provided!
+    Profile:
+      type: object
+      properties:
+        profile:
+          type: object
+          properties:
+            firstName:
+              type: string
+              example: John
+            lastName:
+              type: string
+              example: Smith
+            age:
+              type: integer
+              example: 23
+            about:
+              type: string
+              example: I'a a Test User
